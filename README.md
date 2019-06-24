@@ -22,12 +22,12 @@ The ``fashionnlp'' package contains three folders:
 To train an LSTM-CRF model:
    ``` bash 
       python lstm_fashion.py 
-    ```
- To use the boostap approach:
+   ```
+  To use the boostap approach:
    ``` bash 
       python bootsrap_lstm.py 
-    ```
+   ```
  To enrich the FashionBrain taxonomy:
    ``` bash 
       python taxonomy_matching.py 
-    ```
+   ```
