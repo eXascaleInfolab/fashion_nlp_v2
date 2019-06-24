@@ -11,9 +11,9 @@ cd ./fashion_nlp_v2/
 ```
 # Description of the FashionNLP Package
 The ``fashionnlp'' package contains three folders:
- -src contains three python scripts:
-    -lstm_fashion.py: the implementation of the LSTM-CRF models
-    -bootsrap_lstm.py: the implementation of the bootstraping approach
-    -taxonomy_matching.py: the implementation of the taxonomy enrichment
- -data contains the training set (fashion_items_train.txt), the testing set (fashion_items_test.txt) and the FashionBrain taxonomy (FBtaxonomy.csv)
+ - src contains three python scripts:
+    - lstm_fashion.py: the implementation of the LSTM-CRF models
+    - bootsrap_lstm.py: the implementation of the bootstraping approach
+    - taxonomy_matching.py: the implementation of the taxonomy enrichment
+ - data contains the training set (fashion_items_train.txt), the testing set (fashion_items_test.txt) and the FashionBrain taxonomy (FBtaxonomy.csv)
 - output contains the results of the bootstrap approach.
