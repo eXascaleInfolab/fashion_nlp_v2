@@ -17,3 +17,17 @@ The ``fashionnlp'' package contains three folders:
     - taxonomy_matching.py: the implementation of the taxonomy enrichment
  - data contains the training set (fashion_items_train.txt), the testing set (fashion_items_test.txt) and the FashionBrain taxonomy (FBtaxonomy.csv)
 - output contains the results of the bootstrap approach.
+
+### Running the code 
+To train an LSTM-CRF model:
+   ``` bash 
+      python lstm_fashion.py 
+    ```
+ To use the boostap approach:
+   ``` bash 
+      python bootsrap_lstm.py 
+    ```
+ To enrich the FashionBrain taxonomy:
+   ``` bash 
+      python taxonomy_matching.py 
+    ```
