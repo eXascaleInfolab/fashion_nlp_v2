@@ -38,21 +38,23 @@ The ``fashionnlp'' package contains three folders:
    ``` bash 
       python lstm_fashion.py --data_folder '../data/lstm_input' --embedding 'no_char' --epochs 150 --output_folder '../output'
    ```
-  - The arguments needed to use the bootstrap approach are:
-	– model: Path to folder containing the model to load
-	– first iteration: Path to folder containing the first iteration input data
-	– second iteration: Path to folder containing the second iteration input data
-	– epochs: Number of epochs to train the chosen model
-	– retrained: Path to the data file trained in the second iteration
-	– output folder: Path to the output folder to save three files
+ 
+- The arguments needed to use the bootstrap approach are:
+	- model: Path to folder containing the model to load
+	- first iteration: Path to folder containing the first iteration input data
+	- second iteration: Path to folder containing the second iteration input data
+	- epochs: Number of epochs to train the chosen model
+	- retrained: Path to the data file trained in the second iteration
+	- output folder: Path to the output folder to save three files
 
  # Example:
    ``` bash 
       python bootsrap_lstm.py --model '../output/no_char_1st_iter/final-model.pt' --first_iteration '../data/lstm_input' --second_iteration '../data/lstm_bootstrap' --epochs 100 --retrained '../data/lstm_bootstrap/retrained_data.tsv' --output_folder '../output/no_char_2nd_iter'
    ```
+   
   - The arguments needed to enrich the FashionBrain taxonomy:
-  	– taxonomy: Path to the FashionBrain taxonomy
-	– test result: Path to the file containing the testing result filled with orange. Web safe RGB # F16823
+  	- taxonomy: Path to the FashionBrain taxonomy
+	- test result: Path to the file containing the testing result filled with orange. Web safe RGB # F16823
 
    ``` bash 
       python taxonomy_matching.py --taxonomy '../data/enrichment_input/FBtaxonomy.csv' --test_result '../data/enrichment_input/test_result.txt'
