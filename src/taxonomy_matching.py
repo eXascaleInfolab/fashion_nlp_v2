@@ -4,12 +4,8 @@ import json
 import ast
 from fuzzywuzzy import process
 import Levenshtein
+import argparse
 
-
-test_result=pd.read_csv('../data/entity_extraction/test_result.txt',delimiter=';;',engine='python')
-FBtaxonomy = pd.read_csv('../data/entity_extraction/FBtaxonomy.csv',names=['id','level_1','level_2','level_3','level_4', \
-                                                                           'level_5','level_6'])
-levels=['level_1','level_2','level_3','level_4','level_5','level_6']
 
 def match_names(name,FBtaxonomy):
     best_candidates_distances=[]
@@ -45,43 +41,70 @@ def look_fi_parents(taxonomy, name):
     return best_matches,all_parents
 
 
-new_items=0
-#for i in range(0,test_result.shape[0]-1):
-for i in range(0,test_result.shape[0]-1):
-    sentence =  test_result.iloc[i,1]
-    list_tuples = ast.literal_eval(sentence)
-    fashion_items = [item for item in list_tuples if item[1] == 'PER']
-    fashion_items_reduced=[]
-    indexes_fashion_items = [list_tuples.index(fashion_items[i]) for i in range(0,len(fashion_items))]
-    id=0
-    while (id < len(indexes_fashion_items)):
-        if (indexes_fashion_items[id]+1) in indexes_fashion_items:
-            if (indexes_fashion_items[id] + 2) in indexes_fashion_items:
-                fashion_items_reduced.append(
-                    list_tuples[indexes_fashion_items[id]][0] + ' ' + list_tuples[indexes_fashion_items[id] + 1][0] \
-                    + ' ' + list_tuples[indexes_fashion_items[id] + 2][0])
-                id=id+3
+
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="bootstrap")
+
+    parser.add_argument("--taxonomy",
+                        type=str,
+                        required=True,
+                        help="Path to taxonomy file")
+
+    parser.add_argument("--test_result",
+                        type=str,
+                        required=True,
+                        help="Path to the testing file")
+    args = parser.parse_args()
+    return args
+
+
+if __name__=='__main__':
+    args = parse_args()
+    taxonomy = args.taxonomy
+    test_result_path = args.test_result
+    test_result = pd.read_csv(test_result_path, delimiter=';;', engine='python')
+    FBtaxonomy = pd.read_csv(taxonomy,
+                             names=['id', 'level_1', 'level_2', 'level_3', 'level_4', \
+                                    'level_5', 'level_6'])
+    levels = ['level_1', 'level_2', 'level_3', 'level_4', 'level_5', 'level_6']
+    new_items=0
+    #for i in range(0,test_result.shape[0]-1):
+    for i in range(0,test_result.shape[0]-1):
+        sentence =  test_result.iloc[i,1]
+        list_tuples = ast.literal_eval(sentence)
+        fashion_items = [item for item in list_tuples if item[1] == 'PER']
+        fashion_items_reduced=[]
+        indexes_fashion_items = [list_tuples.index(fashion_items[i]) for i in range(0,len(fashion_items))]
+        id=0
+        while (id < len(indexes_fashion_items)):
+            if (indexes_fashion_items[id]+1) in indexes_fashion_items:
+                if (indexes_fashion_items[id] + 2) in indexes_fashion_items:
+                    fashion_items_reduced.append(
+                        list_tuples[indexes_fashion_items[id]][0] + ' ' + list_tuples[indexes_fashion_items[id] + 1][0] \
+                        + ' ' + list_tuples[indexes_fashion_items[id] + 2][0])
+                    id=id+3
+                else:
+                    fashion_items_reduced.append(list_tuples[indexes_fashion_items[id]][0]+' '+list_tuples[indexes_fashion_items[id]+1][0])
+                    id = id + 2
+
+
             else:
-                fashion_items_reduced.append(list_tuples[indexes_fashion_items[id]][0]+' '+list_tuples[indexes_fashion_items[id]+1][0])
-                id = id + 2
+                fashion_items_reduced.append(list_tuples[indexes_fashion_items[id]][0])
+                id = id+1
+        for i in range(0,len(fashion_items_reduced)):
+            fashion_item = fashion_items_reduced[i]
+            best_matches, all_parents = look_fi_parents (FBtaxonomy,fashion_item)
+            if best_matches[0][0]>0.8:
+                print('fashion item:',fashion_item,'\t best matches: \t',best_matches[0][2],'\t all parents:\t',all_parents)
+            elif (len(fashion_item.split(' '))>1):
+                list_items = fashion_item.split(' ')
+                best_matches, all_parents = look_fi_parents(FBtaxonomy, list_items[-1])
+                if best_matches[0][0] > 0.8:
+                    new_items = new_items + 1
+                    print('fashion item:', fashion_item, '\t suggested parent: \t', best_matches[0][2], '\t all parents:\t', all_parents)
 
 
-        else:
-            fashion_items_reduced.append(list_tuples[indexes_fashion_items[id]][0])
-            id = id+1
-    for i in range(0,len(fashion_items_reduced)):
-        fashion_item = fashion_items_reduced[i]
-        best_matches, all_parents = look_fi_parents (FBtaxonomy,fashion_item)
-        if best_matches[0][0]>0.8:
-            print 'fashion item:',fashion_item,'\t best matches: \t',best_matches[0][2],'\t all parents:\t',all_parents
-        elif (len(fashion_item.split(' '))>1):
-            list_items = fashion_item.split(' ')
-            best_matches, all_parents = look_fi_parents(FBtaxonomy, list_items[-1])
-            if best_matches[0][0] > 0.8:
-                new_items = new_items + 1
-                print 'fashion item:', fashion_item, '\t suggested parent: \t', best_matches[0][2], '\t all parents:\t', all_parents
-
-
-print "total number of discovered items:",new_items
-
-
+    print("total number of discovered items:",new_items)
