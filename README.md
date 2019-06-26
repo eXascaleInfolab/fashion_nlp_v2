@@ -15,7 +15,7 @@ git clone https://github.com/FashionBrainTeam/fashion_nlp_v2
 cd ./fashion_nlp_v2/
 ```
 # Description of the FashionNLP Package
-The ``fashionnlp'' package contains three folders:
+The "fashionnlp" package contains three folders:
  - src contains three python scripts:
     - lstm_fashion.py: the implementation of the LSTM-CRF models
     - bootsrap_lstm.py: the implementation of the bootstraping approach
