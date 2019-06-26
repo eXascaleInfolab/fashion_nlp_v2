@@ -34,7 +34,7 @@ The ``fashionnlp'' package contains three folders:
 	 - epochs: Number of epochs to train the chosen model
 	 - output folder: Path to the output folder to save three files: loss.tsv contains the accuracy measures in each epoch, test.tsv contains the the testing set with model labels and training.log contains the log history.
 
- # Example:
+ #### Example:
    ``` bash 
       python lstm_fashion.py --data_folder '../data/lstm_input' --embedding 'no_char' --epochs 150 --output_folder '../output'
    ```
@@ -47,11 +47,11 @@ The ``fashionnlp'' package contains three folders:
 	- retrained: Path to the data file trained in the second iteration
 	- output folder: Path to the output folder to save three files
 
- # Example:
+ #### Example:
    ``` bash 
       python bootsrap_lstm.py --model '../output/no_char_1st_iter/final-model.pt' --first_iteration '../data/lstm_input' --second_iteration '../data/lstm_bootstrap' --epochs 100 --retrained '../data/lstm_bootstrap/retrained_data.tsv' --output_folder '../output/no_char_2nd_iter'
    ```
-   
+
   - The arguments needed to enrich the FashionBrain taxonomy:
   	- taxonomy: Path to the FashionBrain taxonomy
 	- test result: Path to the file containing the testing result filled with orange. Web safe RGB # F16823
